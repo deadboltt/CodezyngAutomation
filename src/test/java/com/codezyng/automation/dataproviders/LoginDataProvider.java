@@ -5,11 +5,10 @@ import org.testng.annotations.DataProvider;
 
 public class LoginDataProvider {
 
-    @DataProvider(name = "loginExcelData")
-    public Object[][] getLoginData() {
-        return ExcelUtils.getTestData(
-                "src/test/resources/testdata/LoginData.xlsx",
-                "Login"
-        );
-    }
+	@DataProvider(name = "loginExcelData")
+	public Object[][] getLoginData() { // Fixed return type to Object[][]
+		String filePath = "src/test/resources/testdata/LoginData.xlsx".replace("/",
+				System.getProperty("file.separator"));
+		return ExcelUtils.getTestData(filePath, "Login");
+	}
 }

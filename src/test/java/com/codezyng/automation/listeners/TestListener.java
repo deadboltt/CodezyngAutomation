@@ -1,44 +1,33 @@
 package com.codezyng.automation.listeners;
 
-import com.aventstack.extentreports.Status;
-import com.codezyng.automation.utils.ExtentManager;
-import com.codezyng.automation.utils.ExtentTestManager;
 import com.codezyng.automation.utils.ScreenshotUtils;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 public class TestListener implements ITestListener {
-
+    
     @Override
     public void onTestStart(ITestResult result) {
-        ExtentTestManager.setTest(
-                ExtentManager.getExtent()
-                        .createTest(result.getMethod().getMethodName())
-        );
+        // Optional: Pre-test screenshot
     }
-
+    
     @Override
     public void onTestSuccess(ITestResult result) {
-        ExtentTestManager.getTest()
-                .log(Status.PASS, "Test passed");
+        takeScreenshot(result, "PASS");
     }
-
+    
     @Override
     public void onTestFailure(ITestResult result) {
-        ExtentTestManager.getTest()
-                .log(Status.FAIL, result.getThrowable());
-
-        byte[] screenshot = ScreenshotUtils.getScreenshotAsBytes();
-        ExtentTestManager.getTest()
-                .addScreenCaptureFromBase64String(
-                        ScreenshotUtils.convertToBase64(screenshot),
-                        "Failure Screenshot"
-                );
+        takeScreenshot(result, "FAIL");
     }
-
+    
     @Override
-    public void onFinish(org.testng.ITestContext context) {
-        ExtentManager.getExtent().flush();
-        ExtentTestManager.unload();
+    public void onTestSkipped(ITestResult result) {
+        takeScreenshot(result, "SKIP");
+    }
+    
+    private void takeScreenshot(ITestResult result, String status) {
+        String testClassName = result.getTestClass().getName().replace("com.codezyng.automation.tests.", "");
+        ScreenshotUtils.captureScreenshot(testClassName);
     }
 }

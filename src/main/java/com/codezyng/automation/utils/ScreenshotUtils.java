@@ -1,61 +1,43 @@
 package com.codezyng.automation.utils;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Base64;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 
 import com.codezyng.automation.base.DriverManager;
 
-public final class ScreenshotUtils {
+public class ScreenshotUtils {
 
     private ScreenshotUtils() {}
 
-    /**
-     * 📸 Capture screenshot as byte[] (Used by Allure & Extent)
-     */
-    
-    public static byte[] getScreenshotAsBytes() {
-        return ((TakesScreenshot) DriverManager.getDriver())
-                .getScreenshotAs(OutputType.BYTES);
-    }
+    public static void captureScreenshot(String testName) {
 
-    public static String convertToBase64(byte[] bytes) {
-        return Base64.getEncoder().encodeToString(bytes);
-    }
+        WebDriver driver = DriverManager.getDriver();
 
-
-    /**
-     * 📸 Capture screenshot and save to screenshots folder (Optional)
-     */
-    public static String captureScreenshot(String testName) {
-
-        File srcFile = ((TakesScreenshot) DriverManager.getDriver())
-                .getScreenshotAs(OutputType.FILE);
-
-        String screenshotsDir = System.getProperty("user.dir")
-                + File.separator + "screenshots";
-
-        new File(screenshotsDir).mkdirs();
-
-        String destinationPath =
-                screenshotsDir + File.separator + testName + ".png";
-
-        try {
-            Files.copy(
-                    srcFile.toPath(),
-                    Path.of(destinationPath),
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
+        // ✅ ABSOLUTE SAFETY CHECK
+        if (driver == null) {
+            System.out.println("⚠ Driver is null. Screenshot skipped for test: " + testName);
+            return;
         }
 
-        return destinationPath;
+        try {
+            TakesScreenshot ts = (TakesScreenshot) driver;
+            File src = ts.getScreenshotAs(OutputType.FILE);
+
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String path = System.getProperty("user.dir")
+                    + "/screenshots/"
+                    + testName + "_" + timestamp + ".png";
+
+            FileUtils.copyFile(src, new File(path));
+
+        } catch (Exception e) {
+            System.out.println("⚠ Screenshot capture failed: " + e.getMessage());
+        }
     }
 }

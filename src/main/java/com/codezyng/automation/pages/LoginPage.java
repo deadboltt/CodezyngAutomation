@@ -1,49 +1,50 @@
 package com.codezyng.automation.pages;
 
-import com.codezyng.automation.base.DriverManager;
-import com.codezyng.automation.utils.WaitUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
+
+import com.codezyng.automation.base.DriverManager;
 
 public class LoginPage {
 
-    private final By usernameInput = By.id("user-name");
-    private final By passwordInput = By.id("password");
-    private final By loginButton   = By.id("login-button");
-    private final By errorMessage  = By.cssSelector("[data-test='error']");
+    private WebDriver driver;
+
+    private By username = By.id("user-name");
+    private By password = By.id("password");
+    private By loginButton = By.id("login-button");
+    private By errorMessage = By.cssSelector("[data-test='error']");
 
     public LoginPage() {
-        WaitUtils.waitForElementVisible(usernameInput);
+        this.driver = DriverManager.getDriver();
+
+        if (this.driver == null) {
+            throw new RuntimeException("WebDriver is null in LoginPage constructor");
+        }
+
+        PageFactory.initElements(driver, this);
     }
 
-    public LoginPage enterUsername(String username) {
-        DriverManager.getDriver().findElement(usernameInput).clear();
-        DriverManager.getDriver().findElement(usernameInput).sendKeys(username);
+    public LoginPage enterUsername(String user) {
+        driver.findElement(username).sendKeys(user);
         return this;
     }
 
-    public LoginPage enterPassword(String password) {
-        DriverManager.getDriver().findElement(passwordInput).clear();
-        DriverManager.getDriver().findElement(passwordInput).sendKeys(password);
+    public LoginPage enterPassword(String pass) {
+        driver.findElement(password).sendKeys(pass);
         return this;
     }
 
-    /* Used for invalid login (Excel / DataProvider) */
-    public void clickLogin() {
-        DriverManager.getDriver().findElement(loginButton).click();
-    }
-
-    /* Used for Product / Cart / Checkout tests */
     public ProductsPage clickLoginExpectSuccess() {
-        DriverManager.getDriver().findElement(loginButton).click();
-        WaitUtils.waitForUrlContains("inventory");
+        driver.findElement(loginButton).click();
         return new ProductsPage();
     }
 
-    public boolean isErrorMessageDisplayed() {
-        return WaitUtils.isElementPresent(errorMessage);
+    public void clickLogin() {
+        driver.findElement(loginButton).click();
     }
 
-    public String getErrorMessageText() {
-        return WaitUtils.getText(errorMessage);
+    public boolean isErrorMessageDisplayed() {
+        return driver.findElement(errorMessage).isDisplayed();
     }
 }

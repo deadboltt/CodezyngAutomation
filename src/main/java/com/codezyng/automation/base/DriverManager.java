@@ -2,20 +2,25 @@ package com.codezyng.automation.base;
 
 import org.openqa.selenium.WebDriver;
 
-public final class DriverManager {
+public class DriverManager {
 
-    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    private DriverManager() {}
+    private DriverManager() {
+        // prevent instantiation
+    }
 
+    // ✅ Store WebDriver
+    public static void setDriver(WebDriver driverInstance) {
+        driver.set(driverInstance);
+    }
+
+    // ✅ Retrieve WebDriver
     public static WebDriver getDriver() {
         return driver.get();
     }
 
-    public static void setDriver(WebDriver webDriver) {
-        driver.set(webDriver);
-    }
-
+    // ✅ Clear ThreadLocal
     public static void unload() {
         driver.remove();
     }
