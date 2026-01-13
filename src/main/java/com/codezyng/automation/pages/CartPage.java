@@ -29,30 +29,26 @@ public class CartPage {
     /* ---------- Cart Actions ---------- */
 
     public int getCartItemsCount() {
-        return DriverManager.getDriver().findElements(cartItems).size();
+        return DriverManager.getDriver().findElements(By.className("cart_item")).size();
     }
+
 
     /**
      * Remove product from cart by visible product name
      */
     public void removeProductByName(String productName) {
+        List<WebElement> cartItems = DriverManager.getDriver().findElements(By.className("cart_item"));
 
-        List<WebElement> products =
-                DriverManager.getDriver().findElements(inventoryItem);
-
-        for (WebElement product : products) {
-            String name =
-                    product.findElement(By.className("inventory_item_name"))
-                           .getText();
+        for (WebElement item : cartItems) {
+            String name = item.findElement(By.className("inventory_item_name")).getText();
 
             if (name.equalsIgnoreCase(productName)) {
-                product.findElement(By.tagName("button")).click();
+                item.findElement(By.tagName("button")).click();
                 return;
             }
         }
 
-        throw new RuntimeException(
-                "Product not found to remove: " + productName);
+        throw new RuntimeException("Product not found to remove: " + productName);
     }
 
     public CheckoutStepOnePage proceedToCheckout() {
