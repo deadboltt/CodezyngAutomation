@@ -1,0 +1,28 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Ecommerce Automation Suite" parallel="tests" thread-count="2">
+
+    <test name="Login Tests">
+        <classes>
+            <class name="com.codezyng.automation.tests.LoginTests"/>
+        </classes>
+    </test>
+
+    <test name="Product Tests">
+        <classes>
+            <class name="com.codezyng.automation.tests.ProductTests"/>
+        </classes>
+    </test>
+
+    <test name="Cart Tests">
+        <classes>
+            <class name="com.codezyng.automation.tests.CartTests"/>
+        </classes>
+    </test>
+
+    <test name="Checkout Tests">
+        <classes>
+            <class name="com.codezyng.automation.tests.CheckoutTests"/>
+        </classes>
+    </test>
+
+</suite>
