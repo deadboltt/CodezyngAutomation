@@ -26,7 +26,6 @@ public class BaseTest {
 
         System.out.println("🔥 BaseTest @BeforeMethod EXECUTED");
 
-        // ✅ CLI override > config.properties
         String browser = System.getProperty(
                 "browser",
                 ConfigReader.getProperty("browser")
@@ -36,7 +35,7 @@ public class BaseTest {
 
         if (browser == null || browser.isBlank()) {
             browser = "chrome";
-            System.out.println("⚠ Browser not provided. Defaulting to chrome");
+            System.out.println("⚠ Browser not set. Defaulting to chrome");
         }
 
         switch (browser.toLowerCase()) {
@@ -51,13 +50,13 @@ public class BaseTest {
                 chromeOptions.addArguments("--disable-infobars");
                 chromeOptions.addArguments("--disable-save-password-bubble");
 
-                Map<String, Object> chromePrefs = new HashMap<>();
-                chromePrefs.put("credentials_enable_service", false);
-                chromePrefs.put("profile.password_manager_enabled", false);
-                chromePrefs.put("profile.password_manager_leak_detection", false);
-                chromePrefs.put("profile.password_manager_leak_detection_dialog_shown", true);
+                Map<String, Object> prefs = new HashMap<>();
+                prefs.put("credentials_enable_service", false);
+                prefs.put("profile.password_manager_enabled", false);
+                prefs.put("profile.password_manager_leak_detection", false);
+                prefs.put("profile.password_manager_leak_detection_dialog_shown", true);
 
-                chromeOptions.setExperimentalOption("prefs", chromePrefs);
+                chromeOptions.setExperimentalOption("prefs", prefs);
 
                 driver = new ChromeDriver(chromeOptions);
                 break;
@@ -76,15 +75,13 @@ public class BaseTest {
                 throw new RuntimeException("❌ Unsupported browser: " + browser);
         }
 
-        // ✅ Store driver in ThreadLocal
+        // Store driver in ThreadLocal
         DriverManager.setDriver(driver);
 
-        // ✅ Hard safety check
         if (DriverManager.getDriver() == null) {
             throw new RuntimeException("❌ WebDriver is NULL after initialization");
         }
 
-        // Navigate to application
         DriverManager.getDriver().get(baseUrl);
     }
 
@@ -93,8 +90,8 @@ public class BaseTest {
 
         String testName = result.getMethod().getMethodName();
 
-        // 📸 Screenshot for ALL outcomes
         switch (result.getStatus()) {
+
             case ITestResult.SUCCESS:
                 ScreenshotUtils.captureScreenshot(testName + "_PASS");
                 break;
@@ -111,7 +108,6 @@ public class BaseTest {
                 break;
         }
 
-        // 🧹 Quit browser safely
         WebDriver driver = DriverManager.getDriver();
         if (driver != null) {
             driver.quit();
@@ -119,4 +115,5 @@ public class BaseTest {
 
         DriverManager.unload();
     }
+
 }

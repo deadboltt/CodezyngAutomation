@@ -2,21 +2,19 @@ package com.codezyng.automation.utils;
 
 import com.aventstack.extentreports.ExtentTest;
 
-public final class ExtentTestManager {
+public class ExtentTestManager {
 
-    private ExtentTestManager() {}
+    private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
-    private static final ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
-
-    public static void setTest(ExtentTest test) {
-        extentTest.set(test);
+    public static void setTest(ExtentTest extentTest) {
+        test.set(extentTest);
     }
 
     public static ExtentTest getTest() {
-        return extentTest.get();
+        return test.get();
     }
 
     public static void unload() {
-        extentTest.remove();
+        test.remove();
     }
 }
