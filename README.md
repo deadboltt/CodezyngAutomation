@@ -1,4 +1,4 @@
-# 🚀 Codezyng Automation Framework
+# 🚀 Automation Framework
 
 **Selenium | TestNG | Maven | Allure | Extent | Jenkins**
 
