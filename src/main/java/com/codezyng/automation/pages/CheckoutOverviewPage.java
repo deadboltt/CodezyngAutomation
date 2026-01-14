@@ -6,20 +6,19 @@ import org.openqa.selenium.By;
 
 public class CheckoutOverviewPage {
 
-    /* ---------- Locators ---------- */
-    private final By finishButton = By.id("finish");
-    private final By title        = By.className("title");
+	// Locators
+	private final By finishButton = By.id("finish");
+	private final By title = By.className("title");
 
-    /* ---------- Constructor ---------- */
-    public CheckoutOverviewPage() {
-        WaitUtils.waitForElementVisible(title);
-    }
+	// Constructor
+	public CheckoutOverviewPage() {
+		WaitUtils.waitForElementVisible(title);
+	}
 
-    /* ---------- Actions ---------- */
-
-    public OrderConfirmationPage clickFinish() {
-        DriverManager.getDriver().findElement(finishButton).click();
-        WaitUtils.waitForUrlContains("checkout-complete");
-        return new OrderConfirmationPage();
-    }
+	// Actions
+	public OrderConfirmationPage clickFinish() {
+		DriverManager.getDriver().findElement(finishButton).click();
+		WaitUtils.waitForUrlContains("checkout-complete");
+		return new OrderConfirmationPage();
+	}
 }

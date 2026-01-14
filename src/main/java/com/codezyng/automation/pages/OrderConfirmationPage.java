@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 
 public class OrderConfirmationPage {
 
+	// Locators
     private final By successHeader = By.className("complete-header");
     private final By successText   = By.className("complete-text");
 

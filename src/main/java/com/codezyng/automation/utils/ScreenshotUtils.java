@@ -14,31 +14,30 @@ import com.codezyng.automation.base.DriverManager;
 
 public class ScreenshotUtils {
 
-    private ScreenshotUtils() {}
+	private ScreenshotUtils() {
+	}
 
-    public static void captureScreenshot(String testName) {
+	public static void captureScreenshot(String testName) {
 
-        WebDriver driver = DriverManager.getDriver();
+		WebDriver driver = DriverManager.getDriver();
 
-        // ✅ ABSOLUTE SAFETY CHECK
-        if (driver == null) {
-            System.out.println("⚠ Driver is null. Screenshot skipped for test: " + testName);
-            return;
-        }
+		// ABSOLUTE SAFETY CHECK
+		if (driver == null) {
+			System.out.println("⚠ Driver is null. Screenshot skipped for test: " + testName);
+			return;
+		}
 
-        try {
-            TakesScreenshot ts = (TakesScreenshot) driver;
-            File src = ts.getScreenshotAs(OutputType.FILE);
+		try {
+			TakesScreenshot ts = (TakesScreenshot) driver;
+			File src = ts.getScreenshotAs(OutputType.FILE);
 
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String path = System.getProperty("user.dir")
-                    + "/screenshots/"
-                    + testName + "_" + timestamp + ".png";
+			String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			String path = System.getProperty("user.dir") + "/screenshots/" + testName + "_" + timestamp + ".png";
 
-            FileUtils.copyFile(src, new File(path));
+			FileUtils.copyFile(src, new File(path));
 
-        } catch (Exception e) {
-            System.out.println("⚠ Screenshot capture failed: " + e.getMessage());
-        }
-    }
+		} catch (Exception e) {
+			System.out.println("⚠ Screenshot capture failed: " + e.getMessage());
+		}
+	}
 }

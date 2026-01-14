@@ -10,17 +10,17 @@ public class DriverManager {
         // prevent instantiation
     }
 
-    // ✅ Store WebDriver
+    // Store WebDriver
     public static void setDriver(WebDriver driverInstance) {
         driver.set(driverInstance);
     }
 
-    // ✅ Retrieve WebDriver
+    // Retrieve WebDriver
     public static WebDriver getDriver() {
         return driver.get();
     }
 
-    // ✅ Clear ThreadLocal
+    // Clear ThreadLocal
     public static void unload() {
         driver.remove();
     }

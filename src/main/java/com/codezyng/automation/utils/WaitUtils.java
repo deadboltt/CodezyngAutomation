@@ -19,7 +19,7 @@ public class WaitUtils {
 		return new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
-	/* ---------- ELEMENT WAITS ---------- */
+	// ELEMENT WAITS
 
 	public static WebElement waitForElementVisible(By locator) {
 		return getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -42,7 +42,7 @@ public class WaitUtils {
 		return waitForElementVisible(locator).getText();
 	}
 
-	/* ---------- URL WAITS ---------- */
+	// URL WAITS
 
 	public static void waitForUrlContains(String value) {
 		getWait().until(ExpectedConditions.urlContains(value));
