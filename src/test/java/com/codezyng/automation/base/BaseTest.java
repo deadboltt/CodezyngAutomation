@@ -24,39 +24,59 @@ public class BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
 
-        System.out.println("🔥 BaseTest @BeforeMethod EXECUTED");
-
+        // ---------- Read config (CLI overrides allowed) ----------
         String browser = System.getProperty(
                 "browser",
                 ConfigReader.getProperty("browser")
         );
 
+        boolean headless = Boolean.parseBoolean(
+                System.getProperty(
+                        "headless",
+                        ConfigReader.getProperty("headless")
+                )
+        );
+
         String baseUrl = ConfigReader.getProperty("baseUrl");
+
+        // ---------- Fail fast on bad config ----------
+        if (baseUrl == null || baseUrl.isBlank()) {
+            throw new RuntimeException("baseUrl is NULL or EMPTY in config.properties");
+        }
 
         if (browser == null || browser.isBlank()) {
             browser = "chrome";
-            System.out.println("⚠ Browser not set. Defaulting to chrome");
         }
 
+
+        // ---------- Create WebDriver ----------
         switch (browser.toLowerCase()) {
 
             case "chrome":
                 WebDriverManager.chromedriver().setup();
 
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--start-maximized");
-                chromeOptions.addArguments("--disable-popup-blocking");
+
+                if (headless) {
+                    chromeOptions.addArguments("--headless=new");
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                } else {
+                    chromeOptions.addArguments("--start-maximized");
+                }
+
                 chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--disable-infobars");
                 chromeOptions.addArguments("--disable-save-password-bubble");
+
 
                 Map<String, Object> prefs = new HashMap<>();
                 prefs.put("credentials_enable_service", false);
                 prefs.put("profile.password_manager_enabled", false);
                 prefs.put("profile.password_manager_leak_detection", false);
                 prefs.put("profile.password_manager_leak_detection_dialog_shown", true);
-
+                
                 chromeOptions.setExperimentalOption("prefs", prefs);
+
 
                 driver = new ChromeDriver(chromeOptions);
                 break;
@@ -65,7 +85,14 @@ public class BaseTest {
                 WebDriverManager.edgedriver().setup();
 
                 EdgeOptions edgeOptions = new EdgeOptions();
-                edgeOptions.addArguments("--start-maximized");
+
+                if (headless) {
+                    edgeOptions.addArguments("--headless=new");
+                    edgeOptions.addArguments("--window-size=1920,1080");
+                } else {
+                    edgeOptions.addArguments("--start-maximized");
+                }
+
                 edgeOptions.addArguments("--disable-notifications");
 
                 driver = new EdgeDriver(edgeOptions);
@@ -75,13 +102,14 @@ public class BaseTest {
                 throw new RuntimeException("❌ Unsupported browser: " + browser);
         }
 
-        // Store driver in ThreadLocal
+        // ---------- Store driver immediately ----------
         DriverManager.setDriver(driver);
 
         if (DriverManager.getDriver() == null) {
-            throw new RuntimeException("❌ WebDriver is NULL after initialization");
+            throw new RuntimeException("❌ DriverManager returned NULL after setDriver()");
         }
 
+        // ---------- Navigate ----------
         DriverManager.getDriver().get(baseUrl);
     }
 
@@ -90,30 +118,19 @@ public class BaseTest {
 
         String testName = result.getMethod().getMethodName();
 
-        switch (result.getStatus()) {
-
-            case ITestResult.SUCCESS:
-                ScreenshotUtils.captureScreenshot(testName + "_PASS");
-                break;
-
-            case ITestResult.FAILURE:
-                ScreenshotUtils.captureScreenshot(testName + "_FAIL");
-                break;
-
-            case ITestResult.SKIP:
-                ScreenshotUtils.captureScreenshot(testName + "_SKIP");
-                break;
-
-            default:
-                break;
+        // 📸 Capture screenshot ONLY if driver exists
+        if (DriverManager.getDriver() != null) {
+            ScreenshotUtils.captureScreenshot(testName);
+        } else {
+            System.out.println("⚠ Skipping screenshot — driver not initialized for: " + testName);
         }
 
-        WebDriver driver = DriverManager.getDriver();
-        if (driver != null) {
-            driver.quit();
+        // ---------- Quit safely ----------
+        WebDriver drv = DriverManager.getDriver();
+        if (drv != null) {
+            drv.quit();
         }
 
         DriverManager.unload();
     }
-
 }
