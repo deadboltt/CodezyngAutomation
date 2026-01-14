@@ -1,175 +1,280 @@
-\# Ecommerce Automation Framework
+Below is a **clean, professional, interview-ready `README.md`** tailored specifically for your repository
+👉 **[https://github.com/deadboltt/CodezyngAutomation.git](https://github.com/deadboltt/CodezyngAutomation.git)**
 
-Selenium · TestNG · Maven · Jenkins · Allure
+This README reflects **everything you actually implemented**:
 
-**1. Project Overview**
+* BaseTest refactor
+* ThreadLocal WebDriver
+* Headless execution
+* Allure + Extent screenshots
+* Retry logic (TestNG 7–compatible)
+* Jenkins readiness
+* Proper Maven structure (`src/test/java` vs `src/main/java`)
 
-This project is an end-to-end UI automation framework built using
-Selenium WebDriver and TestNG, designed to automate an e-commerce web
-application (SauceDemo).
+You can **replace your existing README.md بالكامل** with this.
 
-The framework supports:
+---
 
-\* Page Object Model (POM)
+# 🚀 Codezyng Automation Framework
 
-\* Data-driven testing
+**Selenium | TestNG | Maven | Allure | Extent | Jenkins**
 
-\* Parallel execution
+---
 
-\* Retry logic
+## 📌 Overview
 
-\* CI/CD integration with Jenkins
+This repository contains a **robust, scalable UI automation framework** built using **Selenium WebDriver and TestNG**, designed to automate the **SauceDemo e-commerce application**.
 
-\* Rich reporting using Allure
+The framework follows **industry best practices** and is suitable for:
 
-\* Email notifications after build completion
+* Real-world automation projects
+* CI/CD pipelines (Jenkins)
+* Automation testing interviews
+* Learning modern Selenium architecture
 
-**2. Tech Stack**
+---
 
-\| Tool \| Purpose \|
+## 🧰 Tech Stack
 
-\| \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-- \|
-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-- \|
+| Tool / Library           | Purpose                       |
+| ------------------------ | ----------------------------- |
+| **Java 17**              | Programming language          |
+| **Selenium WebDriver 4** | UI automation                 |
+| **TestNG 7.11**          | Test framework                |
+| **Maven**                | Build & dependency management |
+| **Allure**               | Advanced test reporting       |
+| **Extent Reports**       | HTML execution reports        |
+| **WebDriverManager**     | Driver binaries management    |
+| **Apache POI**           | Excel data-driven testing     |
+| **Log4j2**               | Logging                       |
+| **Jenkins**              | CI/CD integration             |
 
-\| Java 17 \| Programming language \|
+---
 
-\| Selenium WebDriver \| UI automation \|
+## 🏗 Framework Design
 
-\| TestNG \| Test framework \|
+* **Page Object Model (POM)**
+* **ThreadLocal WebDriver management**
+* **Config-driven execution**
+* **Data-driven testing using Excel**
+* **Headless execution support**
+* **Retry logic for flaky tests**
+* **Allure & Extent reporting**
+* **CI-friendly Maven structure**
 
-\| Maven \| Build & dependency management \|
+```
+ecommerce-automation-framework
+│
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com.codezyng.automation
+│   │   │       ├── base        # Core base classes
+│   │   │       ├── config      # Configuration readers
+│   │   │       ├── pages       # Page Object classes
+│   │   │       └── utils       # Utility helpers
+│   │   │
+│   │   └── resources
+│   │       └── log4j2.xml      # Logging configuration
+│   │
+│   └── test
+│       ├── java
+│       │   └── com.codezyng.automation
+│       │       ├── base            # Test base setup
+│       │       ├── dataproviders   # TestNG data providers
+│       │       ├── listeners       # TestNG listeners (Extent / Retry)
+│       │       ├── retry           # Retry logic
+│       │       └── tests           # Test classes
+│       │
+│       └── resources
+│            └── testdata            # Excel / test data files
+│
+├── pom.xml         # Maven configuration
+└── README.md       # Project documentation
 
-\| Jenkins \| CI/CD \|
 
-\| Allure \| Test reporting \|
+---
 
-\| WebDriverManager \| Browser driver management \|
+## ✅ Test Coverage
 
-\| Log4j2 \| Logging \|
+### 🔐 Login Tests
 
-**3. Test Coverage**
+* Valid login
+* Invalid login (Excel-driven)
+* Empty credentials validation
 
-Login Tests
+### 🛍 Products Tests
 
-\* Valid login
+* Products page load validation
+* Add product to cart
+* Cart badge verification
 
-\* Invalid login (data-driven)
+### 🛒 Cart Tests
 
-Product Tests
+* Add / remove product
+* Cart validation
 
-\* Products page load verification
+### 💳 Checkout Tests
 
-\* Add product to cart
+* Complete checkout flow
+* Order confirmation validation
 
-\* Validate cart badge count
+---
 
-Cart Tests
+## ⚙ Configuration (`config.properties`)
 
-\* Add product to cart
-
-\* Remove product from cart
-
-\* Validate cart is empty
-
-Checkout Tests
-
-\* Complete checkout flow
-
-\* Validate checkout confirmation
-
-**4. Configuration**
-
-config.properties
-
-baseUrl=https://www.saucedemo.com
-
+```properties
+baseUrl=https://www.saucedemo.com/
 browser=chrome
-
 headless=false
 
-timeout=10
+implicitWait=10
+explicitWait=20
+pageLoadTimeout=30
 
-**5. Running Tests Locally**
+testDataPath=src/test/resources/testdata/LoginData.xlsx
+loginSheetName=Login
 
-Prerequisites
+retryCount=1
+```
 
-\* Java 17 installed
+### 🔄 CLI Overrides
 
-\* Maven installed
+```bash
+mvn clean test -Dbrowser=edge -Dheadless=true
+```
 
-\* Chrome browser
+---
 
-**Command**
+## ▶ Running Tests
 
-bash
+### Run via Maven
 
+```bash
 mvn clean test
+```
 
-**6. Jenkins CI/CD Integration**
+### Run via TestNG XML
 
-Jenkins Features
+```
+Right-click testng.xml → Run as → TestNG Suite
+```
 
-\* Pipeline as Code (\`Jenkinsfile\`)
+---
 
-\* Allure Report published on left sidebar
+## 🧪 Data-Driven Testing
 
-\* Email notifications after build completion
+* Excel-based test data using **Apache POI**
+* Supports multiple rows and scenarios
+* Used primarily for login validations
 
-\* Supports scheduled (overnight) execution
+---
 
-Jenkins Job Type
+## 🔁 Retry Logic (TestNG 7 Compatible)
 
-Pipeline
+* Implemented using `IRetryAnalyzer`
+* Applied globally via `IAnnotationTransformer`
+* Configurable retry count
+* Designed for **flaky UI failures**, not business logic failures
 
-SCM: GitHub repository
+---
 
-7\. Allure Reporting
+## 📊 Reporting
 
-Configuration
+### ✅ Allure Reports
 
-src/test/resources/allure.properties
+* Screenshots attached at runtime
+* Supports PASS / FAIL / SKIP
+* CI-friendly
 
-allure.results.directory=target/allure-results
+```bash
+mvn clean test
+allure serve target/allure-results
+```
 
-Access Report
+### ✅ Extent Reports
 
-From Jenkins:
+* HTML report generated per execution
+* Screenshots attached on failures
+* Thread-safe implementation
 
-Job → Build → Allure Report
+```
+target/extent-report/ExtentReport.html
+```
 
-**9. Email Notifications**
+---
 
-Email sent after each build
+## 🧵 Thread Safety & Stability
 
-Includes:
+* WebDriver managed using **ThreadLocal**
+* Safe setup & teardown lifecycle
+* Prevents NullPointerExceptions
+* Parallel-execution ready
 
-1.  Build status
+---
 
-2.  Jenkins build link
+## 🚀 Headless Execution
 
-3.  Allure report link
+Enabled via config or CLI:
 
-**9. Retry & Stability**
+```properties
+headless=true
+```
 
-\* Retry logic applied only for \*\*TimeoutException\*\*
+or
 
-\* Supports parallel execution
+```bash
+mvn clean test -Dheadless=true
+```
 
-\* Thread-safe WebDriver handling
+Ideal for:
 
-**10. Git & Clean Repo Practices**
+* Jenkins
+* CI pipelines
+* Faster execution
 
-\* Build artifacts excluded via \`.gitignore\`
+---
 
-\* No \`target/\` or report files committed
+## 🤖 Jenkins Integration
 
-\* Jenkins & CI friendly
+* Maven-based execution
+* Compatible with Jenkins pipelines
+* Allure & Extent reports can be published
+* Follows Maven directory conventions
 
-11\. Author
+---
 
-Rajath Pai
+## 🧹 Git & Repo Hygiene
 
+* Runtime artifacts ignored via `.gitignore`
+* Sample screenshots/videos stored under `docs/`
+* Clean commit history
+* Interview-ready structure
+
+---
+
+## 👤 Author
+
+**Rajath Pai**
 Automation Test Engineer
-"# SauceDemoAutomation" 
-"# SauceDemoAutomation" 
-"# CodezyngAutomation" 
+
+---
+
+## ⭐ Key Highlights (Interview-Ready)
+
+* Clean BaseTest lifecycle
+* ThreadLocal WebDriver design
+* Retry logic (TestNG 7 safe)
+* Allure + Extent dual reporting
+* Headless & CI support
+* Production-grade Maven structure
+
+---
+
+## 📌 Future Enhancements
+
+* Parallel execution via TestNG
+* Selenium Grid / Docker support
+* GitHub Actions CI
+* API automation integration
+* Visual regression testing
