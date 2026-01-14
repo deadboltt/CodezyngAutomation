@@ -225,17 +225,6 @@ Ideal for:
 * Allure & Extent reports can be published
 * Follows Maven directory conventions
 
----
-
-## 🧹 Git & Repo Hygiene
-
-* Runtime artifacts ignored via `.gitignore`
-* Sample screenshots/videos stored under `docs/`
-* Clean commit history
-* Interview-ready structure
-
----
-
 ## 👤 Author
 
 **Rajath Pai**
