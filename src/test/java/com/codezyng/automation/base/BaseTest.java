@@ -55,10 +55,6 @@ public class BaseTest {
 				chromeOptions.addArguments("--start-maximized");
 			}
 
-			chromeOptions.addArguments("--disable-notifications");
-			chromeOptions.addArguments("--disable-infobars");
-			chromeOptions.addArguments("--disable-save-password-bubble");
-
 			// Code to Fix Weak Password PPOP-UP :)
 			Map<String, Object> prefs = new HashMap<>();
 			prefs.put("credentials_enable_service", false);
@@ -89,14 +85,14 @@ public class BaseTest {
 			break;
 
 		default:
-			throw new RuntimeException("❌ Unsupported browser: " + browser);
+			throw new RuntimeException("Unsupported browser: " + browser);
 		}
 
 		// Store driver immediately
 		DriverManager.setDriver(driver);
 
 		if (DriverManager.getDriver() == null) {
-			throw new RuntimeException("❌ DriverManager returned NULL after setDriver()");
+			throw new RuntimeException("DriverManager returned NULL after setDriver()");
 		}
 
 		// Navigate
